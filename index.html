@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clean.UI - Background Components</title>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 240 10% 3.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 240 10% 3.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 240 10% 3.9%;
+            --primary: 240 5.9% 10%;
+            --primary-foreground: 0 0% 98%;
+            --secondary: 240 4.8% 95.9%;
+            --secondary-foreground: 240 5.9% 10%;
+            --muted: 240 4.8% 95.9%;
+            --muted-foreground: 240 3.8% 46.1%;
+            --accent: 240 4.8% 95.9%;
+            --accent-foreground: 240 5.9% 10%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 0 0% 98%;
+            --border: 240 5.9% 90%;
+            --input: 240 5.9% 90%;
+            --ring: 240 5.9% 10%;
+            --radius: 0.5rem;
+        }
+
+        .dark {
+            --background: 240 10% 3.9%;
+            --foreground: 0 0% 98%;
+            --card: 240 10% 3.9%;
+            --card-foreground: 0 0% 98%;
+            --popover: 240 10% 3.9%;
+            --popover-foreground: 0 0% 98%;
+            --primary: 0 0% 98%;
+            --primary-foreground: 240 5.9% 10%;
+            --secondary: 240 3.7% 15.9%;
+            --secondary-foreground: 0 0% 98%;
+            --muted: 240 3.7% 15.9%;
+            --muted-foreground: 240 5% 64.9%;
+            --accent: 240 3.7% 15.9%;
+            --accent-foreground: 0 0% 98%;
+            --destructive: 0 62.8% 30.6%;
+            --destructive-foreground: 0 0% 98%;
+            --border: 240 3.7% 15.9%;
+            --input: 240 3.7% 15.9%;
+            --ring: 240 4.9% 83.9%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.5;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidenav {
+            width: 250px;
+            background-color: hsl(var(--card));
+            border-right: 1px solid hsl(var(--border));
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .sidenav h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .sidenav ul {
+            list-style-type: none;
+        }
+
+        .sidenav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidenav a {
+            color: hsl(var(--foreground));
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .sidenav a:hover, .sidenav a.active {
+            background-color: hsl(var(--accent));
+            color: hsl(var(--accent-foreground));
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.5rem 1rem;
+            background-color: hsl(var(--secondary));
+            color: hsl(var(--secondary-foreground));
+            border: none;
+            cursor: pointer;
+            border-radius: var(--radius) var(--radius) 0 0;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .tab.active {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+
+        .tab-content {
+            display: none;
+            flex-grow: 1;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        #preview {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        #code {
+            width: 100%;
+            height: 100%;
+            background-color: hsl(var(--muted));
+            color: hsl(var(--muted-foreground));
+            font-family: monospace;
+            padding: 1rem;
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+
+        .dark-mode-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidenav">
+        <h1>Clean.UI</h1>
+        <ul>
+            <li><a href="#" data-component="gradient-dots-background">Gradient Dots Background</a></li>
+            <li><a href="#" data-component="gradient-grid-background/color-shifting-effect">Gradient Grid (Color Shifting)</a></li>
+            <li><a href="#" data-component="gradient-grid-background/pulsating-effect">Gradient Grid (Pulsating)</a></li>
+            <li><a href="#" data-component="gradient-grid-background/sliding-effect">Gradient Grid (Sliding)</a></li>
+            <li><a href="#" data-component="particle-animation-background">Particle Animation Background</a></li>
+        </ul>
+    </nav>
+    <main class="main-content">
+        <div class="tabs">
+            <button class="tab active" data-tab="preview">Preview</button>
+            <button class="tab" data-tab="code">Code</button>
+        </div>
+        <div id="preview-content" class="tab-content active">
+            <iframe id="preview" src=""></iframe>
+        </div>
+        <div id="code-content" class="tab-content">
+            <pre id="code"></pre>
+        </div>
+    </main>
+    <button class="dark-mode-toggle">Toggle Dark Mode</button>
+
+    <script>
+        const components = {
+            'gradient-dots-background': 'components/gradient-dots-background/index.html',
+            'gradient-grid-background/color-shifting-effect': 'components/gradient-grid-background/color-shifting-effect/index.html',
+            'gradient-grid-background/pulsating-effect': 'components/gradient-grid-background/pulsating-effect/index.html',
+            'gradient-grid-background/sliding-effect': 'components/gradient-grid-background/sliding-effect/index.html',
+            'particle-animation-background': 'components/particle-animation-background/index.html'
+        };
+
+        const preview = document.getElementById('preview');
+        const code = document.getElementById('code');
+        const navLinks = document.querySelectorAll('.sidenav a');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        function loadComponent(componentPath) {
+            preview.src = componentPath;
+            fetch(componentPath)
+                .then(response => response.text())
+                .then(html => {
+                    code.textContent = html;
+                });
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                const componentPath = components[link.dataset.component];
+                loadComponent(componentPath);
+            });
+        });
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                tabContents.forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tab.dataset.tab}-content`).classList.add('active');
+            });
+        });
+
+        // Load the first component by default
+        loadComponent(components['gradient-dots-background']);
+
+        // Dark mode toggle
+        const darkModeToggle = document.querySelector('.dark-mode-toggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+        });
+    </script>
+</body>
+</html>
+

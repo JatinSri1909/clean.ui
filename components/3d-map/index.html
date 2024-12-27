@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Globe with Map Integration</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #globe-container, #map-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.5s;
+        }
+        #map-container {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .visible {
+            opacity: 1 !important;
+            pointer-events: all !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="globe-container"></div>
+    <div id="map-container"></div>
+
+    <script>
+        let scene, camera, renderer, globe, controls;
+        let map, isGlobeView = true;
+        const ZOOM_THRESHOLD = 2;
+
+        // Initialize 3D Globe
+        function initGlobe() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('globe-container').appendChild(renderer.domElement);
+
+            // Create Earth sphere
+            const geometry = new THREE.SphereGeometry(5, 64, 64);
+            const textureLoader = new THREE.TextureLoader();
+            const material = new THREE.MeshPhysicalMaterial({
+                map: textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg'),
+                metalness: 0.2,
+                roughness: 0.8,
+                bumpMap: textureLoader.load('https://threejs.org/examples/textures/planets/earth_normal_2048.jpg'),
+                bumpScale: 0.05
+            });
+
+            globe = new THREE.Mesh(geometry, material);
+            scene.add(globe);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(15, 15, 15);
+            scene.add(pointLight);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.minDistance = 7;
+            controls.maxDistance = 20;
+
+            camera.position.z = 15;
+
+            controls.addEventListener('change', checkZoomLevel);
+        }
+
+        // Initialize Leaflet Map
+        function initMap() {
+            map = L.map('map-container').setView([0, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add zoom handler for map
+            map.on('zoomend', function() {
+                if (map.getZoom() < 3 && !isGlobeView) {
+                    switchToGlobe();
+                }
+            });
+        }
+
+        // Check zoom level and switch views
+        function checkZoomLevel() {
+            const distance = camera.position.distanceTo(scene.position);
+            if (distance < 8 && isGlobeView) {
+                switchToMap();
+            }
+        }
+
+        // Switch to map view
+        function switchToMap() {
+            if (!isGlobeView) return;
+            document.getElementById('map-container').classList.add('visible');
+            document.getElementById('globe-container').classList.remove('visible');
+            isGlobeView = false;
+            map.setZoom(4); // Set initial map zoom level
+        }
+
+        // Switch to globe view
+        function switchToGlobe() {
+            if (isGlobeView) return;
+            document.getElementById('globe-container').classList.add('visible');
+            document.getElementById('map-container').classList.remove('visible');
+            isGlobeView = true;
+            camera.position.z = 10; // Reset globe camera position
+            controls.update();
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        window.addEventListener('resize', onWindowResize, false);
+
+        // Initialize everything
+        initGlobe();
+        initMap();
+        animate();
+    </script>
+</body>
+</html>
