@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Background with Grid Dots</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet"> <!-- Import Inter font -->
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, black, gray); /* Gradient from black to gray */
+            overflow: hidden; /* Prevents scrollbars */
+            font-family: 'Inter', sans-serif; /* Set Inter font for the body */
+        }
+        .dot-container {
+            display: grid;
+            gap: 30px; /* Equal spacing between dots */
+            grid-auto-columns: min-content;
+            grid-auto-rows: min-content;
+            width: 100%;
+            height: 100%;
+            position: relative; /* Positioning context for the heading */
+            justify-content: center;
+            align-content: center;
+            padding: 20px;
+        }
+        .dot {
+            width: 2px; /* Dot size changed to 2px */
+            height: 2px; /* Dot size changed to 2px */
+            border-radius: 50%;
+            background-color: white;
+            opacity: 0.8; /* Slightly transparent */
+            animation: changeColor 2s infinite alternate;
+        }
+        @keyframes changeColor {
+            0% { opacity: 0.8; }
+            100% { opacity: 0.3; }
+        }
+        h1 {
+            position: absolute; /* Positioning the heading */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust for exact center */
+            color: white; /* Text color for visibility */
+            font-size: 24px; /* Font size for the heading */
+            text-align: center; /* Center text alignment */
+        }
+    </style>
+</head>
+<body>
+    <div class="dot-container">
+        <!-- Dots will be generated here -->
+    </div>
+    <h1>Gradient Dots Component</h1> <!-- Heading added -->
+
+    <script>
+        const container = document.querySelector('.dot-container');
+        const gap = 30; // Gap between dots in pixels
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // Calculate number of dots that can fit in viewport
+        const columns = Math.floor(viewportWidth / gap);
+        const rows = Math.floor(viewportHeight / gap);
+        
+        // Update grid template
+        container.style.gridTemplateColumns = `repeat(${columns}, min-content)`;
+        container.style.gridTemplateRows = `repeat(${rows}, min-content)`;
+        
+        const numberOfDots = columns * rows;
+
+        for (let i = 0; i < numberOfDots; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            dot.style.animationDelay = `${Math.random() * 2}s`;
+            container.appendChild(dot);
+        }
+    </script>
+</body>
+</html>
