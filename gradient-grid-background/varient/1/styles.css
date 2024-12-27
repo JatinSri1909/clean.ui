@@ -1,0 +1,48 @@
+/* styles.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: 
+      linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)) center/100% 100%, 
+      repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 1px, transparent 50px) center/50px 50px, 
+      repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 1px, transparent 50px) center/50px 50px;
+    
+    color: #fff;
+    
+    /* Animation */
+    animation: backgroundAnimation 10s linear infinite; /* Adjust duration as needed */
+  }
+  
+  @keyframes backgroundAnimation {
+    from {
+      background-position: 0% 0%; /* Starting position */
+    }
+    
+    to {
+      background-position: 100% 100%; /* Ending position */
+    }
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure grid spans full height */
+  }
+  
+  .container {
+    text-align: center;
+    background: none; /* Transparent container */
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    color: #fff;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    color: #ccc;
+  }
